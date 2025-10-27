@@ -12,26 +12,27 @@ namespace Tiers.DAL.Repo.Implementation
             _db = context;
         }
 
-        public IEnumerable<Department> GetAll(Expression<Func<Department, bool>>? Filter = null)
+        public async Task<IEnumerable<Department>> GetAllAsync(Expression<Func<Department, bool>>? filter = null)
         {
             try
             {
-                if (Filter != null)
+                if (filter != null)
                 {
-                    return _db.Departments.Where(Filter).ToList();
+                    return await _db.Departments.Where(filter).ToListAsync();
                 }
-                return _db.Departments.ToList();
+                return await _db.Departments.ToListAsync();
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public Department GetById(int id)
+
+        public async Task<Department?> GetByIdAsync(int id)
         {
             try
             {
-                var dep = _db.Departments.Find(id);
+                var dep = await _db.Departments.FindAsync(id);
                 if (dep != null)
                 {
                     return dep;
@@ -43,7 +44,8 @@ namespace Tiers.DAL.Repo.Implementation
                 throw;
             }
         }
-        public bool Add(Department newDepartment)
+
+        public async Task<bool> AddAsync(Department newDepartment)
         {
             try
             {
@@ -51,12 +53,12 @@ namespace Tiers.DAL.Repo.Implementation
                 {
                     return false;
                 }
-                var result = _db.Departments.Add(newDepartment);
-                if (result.Entity.Id <= 0)
+                var result = await _db.Departments.AddAsync(newDepartment);
+                if (result.Entity.Id <= 0) // care about this, id is given only after save changes
                 {
                     return false;
                 }
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -64,7 +66,8 @@ namespace Tiers.DAL.Repo.Implementation
                 throw;
             }
         }
-        public bool Update(Department newDepartment)
+
+        public async Task<bool> UpdateAsync(Department newDepartment)
         {
             try
             {
@@ -72,7 +75,7 @@ namespace Tiers.DAL.Repo.Implementation
                 {
                     return false;
                 }
-                var oldDepartment = _db.Departments.Find(newDepartment.Id);
+                var oldDepartment = await _db.Departments.FindAsync(newDepartment.Id);
                 if (oldDepartment == null)
                 {
                     return false;
@@ -80,8 +83,8 @@ namespace Tiers.DAL.Repo.Implementation
                 bool result = oldDepartment.Update(newDepartment.Name, newDepartment.Area, "Fady");
                 if (result)
                 {
-                    _db.SaveChanges();
-                    return result;
+                    await _db.SaveChangesAsync();
+                    return true;
                 }
                 return false;
             }
@@ -90,11 +93,12 @@ namespace Tiers.DAL.Repo.Implementation
                 throw;
             }
         }
-        public bool ToggleDeleteStatus(int id)
+
+        public async Task<bool> ToggleDeleteStatusAsync(int id)
         {
             try
             {
-                var dep = _db.Departments.Find(id);
+                var dep = await _db.Departments.FindAsync(id);
                 if (dep == null)
                 {
                     return false;
@@ -102,8 +106,8 @@ namespace Tiers.DAL.Repo.Implementation
                 bool result = dep.ToggleDelete(dep.DeletedBy ?? "Fady");
                 if (result)
                 {
-                    _db.SaveChanges();
-                    return result;
+                    await _db.SaveChangesAsync();
+                    return true;
                 }
                 return false;
             }
@@ -112,5 +116,6 @@ namespace Tiers.DAL.Repo.Implementation
                 throw;
             }
         }
+
     }
 }

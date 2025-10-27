@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Tiers.DAL.Repo.Abstraction;
 
 namespace Tiers.DAL.Repo.Implementation
@@ -13,26 +12,27 @@ namespace Tiers.DAL.Repo.Implementation
             _db = context;
         }
 
-        public IEnumerable<Employee> GetAll(Expression<Func<Employee, bool>>? Filter = null)
+        public async Task<IEnumerable<Employee>> GetAllAsync(Expression<Func<Employee, bool>>? filter = null)
         {
             try
             {
-                if (Filter != null)
+                if (filter != null)
                 {
-                    return _db.Employees.Where(Filter).ToList();
+                    return await _db.Employees.Where(filter).ToListAsync();
                 }
-                return _db.Employees.ToList();
+                return await _db.Employees.ToListAsync();
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public Employee GetById(int id)
+
+        public async Task<Employee?> GetByIdAsync(int id)
         {
             try
             {
-                var emp = _db.Employees.Find(id);
+                var emp = await _db.Employees.FindAsync(id);
                 if (emp != null)
                 {
                     return emp;
@@ -44,7 +44,8 @@ namespace Tiers.DAL.Repo.Implementation
                 throw;
             }
         }
-        public bool Add(Employee newEmployee)
+
+        public async Task<bool> AddAsync(Employee newEmployee)
         {
             try
             {
@@ -52,20 +53,17 @@ namespace Tiers.DAL.Repo.Implementation
                 {
                     return false;
                 }
-                var result = _db.Employees.Add(newEmployee);
-                if (result.Entity.Id <= 0)
-                {
-                    return false;
-                }
-                _db.SaveChanges();
-                return true;
+                var result = await _db.Employees.AddAsync(newEmployee);
+                await _db.SaveChangesAsync();
+                return result.Entity.Id > 0;
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        public bool Update(Employee newEmployee)
+
+        public async Task<bool> UpdateAsync(Employee newEmployee)
         {
             try
             {
@@ -73,7 +71,7 @@ namespace Tiers.DAL.Repo.Implementation
                 {
                     return false;
                 }
-                var oldEmployee = _db.Employees.Find(newEmployee.Id);
+                var oldEmployee = await _db.Employees.FindAsync(newEmployee.Id);
                 if (oldEmployee == null)
                 {
                     return false;
@@ -81,8 +79,8 @@ namespace Tiers.DAL.Repo.Implementation
                 bool result = oldEmployee.Update(newEmployee.Name, newEmployee.Salary, newEmployee.DepartmentId, "Fady");
                 if (result)
                 {
-                    _db.SaveChanges();
-                    return result;
+                    await _db.SaveChangesAsync();
+                    return true;
                 }
                 return false;
             }
@@ -91,11 +89,12 @@ namespace Tiers.DAL.Repo.Implementation
                 throw;
             }
         }
-        public bool ToggleDeleteStatus(int id)
+
+        public async Task<bool> ToggleDeleteStatusAsync(int id)
         {
             try
             {
-                var emp = _db.Employees.Find(id);
+                var emp = await _db.Employees.FindAsync(id);
                 if (emp == null)
                 {
                     return false;
@@ -103,8 +102,8 @@ namespace Tiers.DAL.Repo.Implementation
                 bool result = emp.ToggleDelete(emp.DeletedBy ?? "Fady");
                 if (result)
                 {
-                    _db.SaveChanges();
-                    return result;
+                    await _db.SaveChangesAsync();
+                    return true;
                 }
                 return false;
             }
