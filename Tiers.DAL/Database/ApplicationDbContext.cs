@@ -1,4 +1,4 @@
-﻿using Tiers.DAL.Entity;
+﻿using Tiers.DAL.Configuration;
 
 namespace Tiers.DAL.Database
 {
@@ -15,10 +15,14 @@ namespace Tiers.DAL.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Department>()
-                .HasMany(d => d.Employees)
-                .WithOne(e => e.Department)
-                .HasForeignKey(e => e.DepartmentId);
+            base.OnModelCreating(modelBuilder);
+
+            // Register entity config
+            modelBuilder.ApplyConfiguration(new EmployeeConfig());
+            modelBuilder.ApplyConfiguration(new DepartmentConfig());
+
+            // Alternatively, you can use the following line to automatically apply all configurations from the assembly
+            // modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
         public DbSet<Employee> Employees { get; set; }

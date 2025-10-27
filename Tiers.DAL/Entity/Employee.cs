@@ -15,7 +15,7 @@
             IsDeleted = false;
         }
 
-        public int Id { get; internal set; }
+        public int Id { get; private set; }
         public string Name { get; private set; }
         public int Age { get; private set; }
         public decimal Salary { get; private set; }

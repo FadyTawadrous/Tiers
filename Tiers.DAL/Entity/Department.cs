@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Tiers.DAL.Entity
 {
     public class Department
@@ -27,6 +22,8 @@ namespace Tiers.DAL.Entity
             Area = area;
             CreatedBy = createdBy;
             CreatedOn = DateTime.Now;
+            IsDeleted = false;
+            Employees = new List<Employee>();
         }
 
         public bool Update(string name, string area, string userModified)
