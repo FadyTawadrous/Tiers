@@ -17,6 +17,7 @@ namespace Tiers.BLL.ModelVM.Employee
         [Range(0, double.MaxValue)]
         public decimal Salary { get; set; }
 
+        public string? ImageUrl { get; set; }
         public IFormFile? Image { get; set; }
 
         [Required]
