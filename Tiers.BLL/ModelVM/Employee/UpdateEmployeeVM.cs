@@ -1,8 +1,11 @@
 ﻿
 namespace Tiers.BLL.ModelVM.Employee
 {
-    public class CreateEmployeeVM
+    public class UpdateEmployeeVM
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required]
         public string Name { get; set; } = string.Empty;
 
@@ -17,11 +20,12 @@ namespace Tiers.BLL.ModelVM.Employee
         public IFormFile? Image { get; set; }
 
         [Required]
-        public string CreatedBy { get; set; } = string.Empty;
+        public int DepartmentId { get; set; }
 
         [Required]
-        public int DepartmentId { get;  set; }
+        public string UpdatedBy { get; set; } = string.Empty;
 
         public IEnumerable<SelectListItem> Departments { get; set; } = new List<SelectListItem>();
+
     }
 }

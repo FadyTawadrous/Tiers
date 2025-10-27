@@ -16,6 +16,7 @@ namespace Tiers.BLL.Common
         public static IServiceCollection AddBusinessInBLL(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IDepartmentService, DepartmentService>();
             return services;
         }
     }
