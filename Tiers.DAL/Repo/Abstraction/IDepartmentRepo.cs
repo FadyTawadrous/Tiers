@@ -5,12 +5,12 @@ namespace Tiers.DAL.Repo.Abstraction
     public interface IDepartmentRepo
     {
         // Query Methods
-        Task<Department> GetById(int id);
-        Task<IEnumerable<Department>> GetAll(Expression<Func<Department, bool>>? Filter = null);
+        Task<Department?> GetByIdAsync(int id);
+        Task<IEnumerable<Department>> GetAllAsync(Expression<Func<Department, bool>>? Filter = null);
 
         // Command Methods
-        Task<bool> Add(Department newDepartment);
-        Task<bool> Update(Department newDepartment);
-        Task<bool> ToggleDeleteStatus(int id);
+        Task<bool> AddAsync(Department newDepartment);
+        Task<bool> UpdateAsync(Department newDepartment);
+        Task<bool> ToggleDeleteStatusAsync(int id);
     }
 }
