@@ -1,0 +1,31 @@
+﻿@using Tiers.BLL.ModelVM.Employee
+@using Tiers.BLL.Responses;
+
+@model ResponseResult<List<GetEmployeeVM>>;
+
+@if (Model.IsSuccess)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Result)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        Error: @Model.ErrorMessage
+    </div>
+}
