@@ -1,31 +1,73 @@
-﻿@using Tiers.BLL.ModelVM.Employee
-@using Tiers.BLL.Responses;
+﻿@model IEnumerable<Tiers.BLL.ModelVM.Employee.GetEmployeeVM>
 
-@model ResponseResult<List<GetEmployeeVM>>;
+@{
+    ViewData["Title"] = "Employees";
+}
 
-@if (Model.IsSuccess)
+<h2>Employees</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Employee</a>
+</p>
+
+@if (!Model.Any())
 {
-    <table class="table">
+    <div class="alert alert-warning" role="alert">
+        No employees found.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
+                <th>
+                    Photo
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Age)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Salary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DepartmentName)
+                </th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var employee in Model.Result)
+            @foreach (var item in Model)
             {
                 <tr>
-                    <td>@employee.Id</td>
-                    <td>@employee.Name</td>
+                    <td>
+                        <img src="~/Files/Images/@(item.ImageUrl ?? "default.png")"
+                             alt="@item.Name"
+                             class="img-thumbnail"
+                             style="width: 75px; height: 75px; object-fit: cover; border-radius: 50%;">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartmentName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-}
-else
-{
-    <div class="alert alert-danger">
-        Error: @Model.ErrorMessage
-    </div>
 }

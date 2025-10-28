@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Tiers.BLL\Tiers.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Files\" />
-  </ItemGroup>
-
 </Project>
