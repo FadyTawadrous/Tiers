@@ -86,7 +86,7 @@ namespace Tiers.DAL.Repo.Implementation
                 {
                     return false;
                 }
-                bool result = oldDepartment.Update(newDepartment.Name, newDepartment.Area, "Fady");
+                bool result = oldDepartment.Update(newDepartment.Name, newDepartment.Area, newDepartment.UpdatedBy);
                 if (result)
                 {
                     await _db.SaveChangesAsync();
@@ -116,6 +116,19 @@ namespace Tiers.DAL.Repo.Implementation
                     return true;
                 }
                 return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            try
+            {
+                // SaveChangesAsync returns the number of rows affected
+                return await _db.SaveChangesAsync() > 0;
             }
             catch (Exception)
             {

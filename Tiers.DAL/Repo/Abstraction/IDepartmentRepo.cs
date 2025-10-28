@@ -14,5 +14,6 @@ namespace Tiers.DAL.Repo.Abstraction
         Task<bool> AddAsync(Department newDepartment);
         Task<bool> UpdateAsync(Department newDepartment);
         Task<bool> ToggleDeleteStatusAsync(int id);
+        Task<bool> SaveChangesAsync();
     }
 }

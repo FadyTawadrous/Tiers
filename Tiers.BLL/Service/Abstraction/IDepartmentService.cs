@@ -1,4 +1,5 @@
 ﻿using Tiers.BLL.ModelVM.Department;
+using Tiers.BLL.ModelVM.Employee;
 
 namespace Tiers.BLL.Service.Abstraction
 {

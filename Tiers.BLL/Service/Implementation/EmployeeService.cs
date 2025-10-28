@@ -39,7 +39,9 @@ namespace Tiers.BLL.Service.Implementation
             {
                 var employee = await _employeeRepo.GetByIdAsync(id);
                 if (employee == null || employee.IsDeleted)
+                {
                     return new ResponseResult<GetEmployeeVM>(null, "Employee not found.", false);
+                }
 
                 var mapped = _mapper.Map<GetEmployeeVM>(employee);
                 return new ResponseResult<GetEmployeeVM>(mapped, null, true);
