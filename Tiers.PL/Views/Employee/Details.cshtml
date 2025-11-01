@@ -18,25 +18,25 @@
 
     <div class="col-md-8">
         <dl class="row">
-            <dt class="col-sm-4">ID:</dt>
+            <dt class="col-sm-4">@SharedLocalizer["ID"]:</dt>
             <dd class="col-sm-8">@Model.Id</dd>
 
-            <dt class="col-sm-4">Name:</dt>
+            <dt class="col-sm-4">@SharedLocalizer["Name"]:</dt>
             <dd class="col-sm-8">@Model.Name</dd>
 
-            <dt class="col-sm-4">Age:</dt>
+            <dt class="col-sm-4">@SharedLocalizer["Age"]:</dt>
             <dd class="col-sm-8">@Model.Age</dd>
 
-            <dt class="col-sm-4">Salary:</dt>
+            <dt class="col-sm-4">@SharedLocalizer["Salary"]:</dt>
             <dd class="col-sm-8">@Model.Salary</dd>
 
-            <dt class="col-sm-4">Department Name:</dt>
+            <dt class="col-sm-4">@SharedLocalizer["Department"]:</dt>
             <dd class="col-sm-8">@Model.DepartmentName</dd>
         </dl>
     </div>
 </div>
 
 <div class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">@SharedLocalizer["Edit"]</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">@SharedLocalizer["Back"]</a>
 </div>

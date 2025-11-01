@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Tiers.BLL.AutoMapper;
 using Tiers.BLL.Common;
 using Tiers.DAL.Common;
 using Tiers.DAL.Database;
 using Tiers.DAL.Entity;
+using Tiers.PL.Language;
 
 namespace Tiers.PL
 {
@@ -14,7 +18,13 @@ namespace Tiers.PL
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource));
+                });
 
             // Database Context Configuration
             //var connectionString = builder.Configuration.GetConnectionString("TemplateConnection");
@@ -23,9 +33,7 @@ namespace Tiers.PL
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase("MyDB"));
-
-            //builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-            //builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+;
 
             builder.Services.AddBusinessInDAL();
             builder.Services.AddBusinessInBLL();
@@ -34,6 +42,10 @@ namespace Tiers.PL
 
 
             var app = builder.Build();
+            var supportedCultures = new[] {
+                      new CultureInfo("ar-EG"),
+                      new CultureInfo("en-US"),
+                };
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -49,6 +61,18 @@ namespace Tiers.PL
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+                RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                new QueryStringRequestCultureProvider(),
+                new CookieRequestCultureProvider()
+                }
+            });
 
             app.MapControllerRoute(
                 name: "default",
